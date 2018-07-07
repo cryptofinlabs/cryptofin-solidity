@@ -3,7 +3,7 @@ pragma solidity ^0.4.18;
 
 import "truffle/Assert.sol";
 
-import "../contracts/array-utils/UIntArrayUtils.sol";
+import "../../contracts/array-utils/UIntArrayUtils.sol";
 
 
 contract TestUIntArrayUtils {

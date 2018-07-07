@@ -6,7 +6,7 @@ library AddressArrayUtils {
     /**
      * @return Returns index and isIn for the first occurrence starting from index 0
      */ 
-    function index(address[] addresses, address a) internal pure returns (uint256, bool) {
+    function indexOf(address[] addresses, address a) internal pure returns (uint256, bool) {
         for (uint256 i = 0; i < addresses.length; i++) {
             if (addresses[i] == a) {
                 return (i, true);
@@ -14,6 +14,16 @@ library AddressArrayUtils {
         }
         return (0, false);
     }
+
+    /**
+     * @return Returns isIn for the first occurrence starting from index 0
+     */ 
+    function contains(address[] addresses, address a) internal pure returns (bool) {
+      bool isIn;
+      (, isIn) = indexOf(addresses, a);
+      return isIn;
+    }
+
 
     /// @return Returns index and isIn for the first occurrence starting from
     /// end
@@ -26,24 +36,22 @@ library AddressArrayUtils {
       return (0, false);
     }
 
-    function extend(address[] storage a, address[] storage b) internal returns (bool) {
+    function extend(address[] storage a, address[] storage b) internal {
         for (uint256 i = 0; i < b.length; i++) {
             a.push(b[i]);
         }
-        return true;
     }
 
     /**
      * @dev Reverses address array in place
      */
-    function reverse(address[] storage a) internal returns (bool) {
+    function reverse(address[] storage a) internal {
         address t;
         for (uint256 i = 0; i < a.length / 2; i++) {
             t = a[i];
             a[i] = a[a.length - i - 1];
             a[a.length - i - 1] = t;
         }
-        return true;
     }
 
     /**
