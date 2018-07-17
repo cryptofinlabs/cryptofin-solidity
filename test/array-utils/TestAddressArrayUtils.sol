@@ -65,13 +65,32 @@ contract TestAddressArrayUtils {
     Assert.isFalse(isIn, "should be false");
   }
 
-  function testExtendExtends() public {
-    addressesA.extend(addressesB);
-    Assert.equal(addressesA.length, 7, "extended length should be 7");
+  function testExtend() public {
+    address[] memory newAddresses = addressesA.extend(addressesB);
+    Assert.equal(newAddresses.length, 7, "extended length should be 7");
+    Assert.equal(newAddresses[0], address(0x1), "element 0 should match");
+    Assert.equal(newAddresses[1], address(0x2), "element 1 should match");
+    Assert.equal(newAddresses[2], address(0x3), "element 2 should match");
+    Assert.equal(newAddresses[3], address(0x4), "element 3 should match");
+    Assert.equal(newAddresses[4], address(0x8), "element 4 should match");
+    Assert.equal(newAddresses[5], address(0x9), "element 5 should match");
+    Assert.equal(newAddresses[6], address(0x10), "element 6 should match");
   }
 
-  function testExtendExtendsEmpty() public {
-    addressesA.extend(addressesC);
+  function testSExtend() public {
+    addressesA.sExtend(addressesB);
+    Assert.equal(addressesA.length, 7, "extended length should be 7");
+    Assert.equal(addressesA[0], address(0x1), "element 0 should match");
+    Assert.equal(addressesA[1], address(0x2), "element 1 should match");
+    Assert.equal(addressesA[2], address(0x3), "element 2 should match");
+    Assert.equal(addressesA[3], address(0x4), "element 3 should match");
+    Assert.equal(addressesA[4], address(0x8), "element 4 should match");
+    Assert.equal(addressesA[5], address(0x9), "element 5 should match");
+    Assert.equal(addressesA[6], address(0x10), "element 6 should match");
+  }
+
+  function testSExtendEmpty() public {
+    addressesA.sExtend(addressesC);
     Assert.equal(addressesA.length, 4, "extended length should be 4");
   }
 
@@ -92,8 +111,8 @@ contract TestAddressArrayUtils {
     Assert.equal(addressesB[2], address(0x8), "element 2 should match");
   }
 
-  function testRemoveIndex() public {
-    uint256 length = addressesA.removeIndex(2);
+  function testSRemoveIndex() public {
+    uint256 length = addressesA.sRemoveIndex(2);
     Assert.equal(length, 3, "returned length should be 3");
     Assert.equal(addressesA.length, 3, "removed length should be 3");
     Assert.equal(addressesA[0], address(0x1), "element 0 should match");
@@ -101,8 +120,8 @@ contract TestAddressArrayUtils {
     Assert.equal(addressesA[2], address(0x4), "element 2 should match");
   }
 
-  function testRemoveIndexOutOfBounds() public {
-    uint256 length = addressesA.removeIndex(7);
+  function testSRemoveIndexOutOfBounds() public {
+    uint256 length = addressesA.sRemoveIndex(7);
     Assert.equal(length, 4, "returned length should be 4");
     Assert.equal(addressesA.length, 4, "length should be 4");
     Assert.equal(addressesA[0], address(0x1), "element 0 should match");
@@ -111,29 +130,28 @@ contract TestAddressArrayUtils {
     Assert.equal(addressesA[3], address(0x4), "element 3 should match");
   }
 
-  function testRemoveIndexLength0() public {
-    uint256 length = addressesC.removeIndex(0);
+  function testSRemoveIndexLength0() public {
+    uint256 length = addressesC.sRemoveIndex(0);
     Assert.equal(length, 0, "returned length should be 0");
     Assert.equal(addressesC.length, 0, "length should be 3");
   }
 
+  function testRemoveIndex() public {
+    (address[] memory newAddresses, uint256 length) = addressesA.removeIndex(0);
+    Assert.equal(length, 3, "returned length should be 3");
+    Assert.equal(newAddresses.length, 3, "length should be 3");
+    Assert.equal(newAddresses[0], address(0x2), "element 0 should match");
+    Assert.equal(newAddresses[1], address(0x3), "element 1 should match");
+    Assert.equal(newAddresses[2], address(0x4), "element 2 should match");
+  }
+
   function testRemove() public {
-    uint256 length = addressesA.remove(0x1);
+    uint256 length = addressesA.sRemove(0x1);
     Assert.equal(length, 3, "returned length should be 3");
     Assert.equal(addressesA.length, 3, "removed length should be 3");
     Assert.equal(addressesA[0], address(0x4), "element 0 should match");
     Assert.equal(addressesA[1], address(0x2), "element 1 should match");
     Assert.equal(addressesA[2], address(0x3), "element 2 should match");
-  }
-
-  function testRemoveDoesNotExist() public {
-    uint256 length = addressesA.remove(0x111);
-    Assert.equal(length, 4, "returned length should be 4");
-    Assert.equal(addressesA.length, 4, "length should be 4");
-    Assert.equal(addressesA[0], address(0x1), "element 0 should match");
-    Assert.equal(addressesA[1], address(0x2), "element 1 should match");
-    Assert.equal(addressesA[2], address(0x3), "element 2 should match");
-    Assert.equal(addressesA[3], address(0x4), "element 3 should match");
   }
 
 }
