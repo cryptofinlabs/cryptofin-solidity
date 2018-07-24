@@ -1,6 +1,6 @@
 {
   "name": "cryptofin-solidity",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A collection of Solidity libraries.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/cryptofinlabs/cryptofin-solidity.git"
   },
-  "author": "cryptofin",
+  "author": "CryptoFin",
   "license": "CC-BY-SA-3.0",
   "bugs": {
     "url": "https://github.com/cryptofinlabs/cryptofin-solidity/issues"
