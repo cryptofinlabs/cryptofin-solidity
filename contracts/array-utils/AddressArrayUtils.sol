@@ -96,16 +96,16 @@ library AddressArrayUtils {
   function difference(address[] memory A, address[] memory B) internal pure returns (address[] memory) {
     uint256 length = A.length;
     bool[] memory includeMap = new bool[](length);
-    uint256 newLength = 0;
+    uint256 count = 0;
     // First count the new length because can't push for in-memory arrays
     for (uint256 i = 0; i < length; i++) {
       address e = A[i];
       if (!contains(B, e)) {
         includeMap[i] = true;
-        newLength++;
+        count++;
       }
     }
-    address[] memory newAddresses = new address[](newLength);
+    address[] memory newAddresses = new address[](count);
     uint256 j = 0;
     for (i = 0; i < length; i++) {
       if (includeMap[i]) {

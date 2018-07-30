@@ -28,6 +28,33 @@ library UIntArrayUtils {
   }
 
   /**
+   * Looks through each value in the list, returning an array of all the values that pass a truth test (predicate).
+   */
+  function filter(uint256[] memory A, function(uint256) pure returns (bool) predicate)
+    internal
+    pure
+    returns (uint256[] memory)
+  {
+    bool[] memory includeMap = new bool[](A.length);
+    uint256 count = 0;
+    for (uint256 i = 0; i < A.length; i++) {
+      if (predicate(A[i])) {
+        includeMap[i] = true;
+        count++;
+      }
+    }
+    uint256[] memory filtered = new uint256[](count);
+    uint256 j = 0;
+    for (i = 0; i < A.length; i++) {
+      if(includeMap[i]) {
+        filtered[j] = A[i];
+        j++;
+      }
+    }
+    return filtered;
+  }
+
+  /**
    * @return Returns index and isIn for the first occurrence starting from index 0
    */ 
   function indexOf(uint256[] memory A, uint256 a) internal pure returns (uint256, bool) {

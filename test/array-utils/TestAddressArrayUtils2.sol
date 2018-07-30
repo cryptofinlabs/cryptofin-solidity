@@ -14,6 +14,7 @@ contract TestAddressArrayUtils2 {
   address[] addressesA;
   address[] addressesB;
   address[] addressesC;
+  address[] addressesD;
 
   function beforeEach() public {
     addressesA.length = 0;
@@ -93,6 +94,29 @@ contract TestAddressArrayUtils2 {
     Assert.equal(newAddresses[3], address(0x3), "element 3 should match");
     Assert.equal(newAddresses[4], address(0x10), "element 4 should match");
     Assert.equal(newAddresses[5], address(0x11), "element 5 should match");
+  }
+
+  function testUnionLeftEmpty() public {
+    address[] memory newAddresses = addressesC.union(addressesA);
+    Assert.equal(newAddresses.length, 4, "length should be 4");
+    Assert.equal(newAddresses[0], address(0x1), "element 0 should match");
+    Assert.equal(newAddresses[1], address(0x2), "element 1 should match");
+    Assert.equal(newAddresses[2], address(0x3), "element 2 should match");
+    Assert.equal(newAddresses[3], address(0x4), "element 3 should match");
+  }
+
+  function testUnionRightEmpty() public {
+    address[] memory newAddresses = addressesA.union(addressesC);
+    Assert.equal(newAddresses.length, 4, "length should be 4");
+    Assert.equal(newAddresses[0], address(0x1), "element 0 should match");
+    Assert.equal(newAddresses[1], address(0x2), "element 1 should match");
+    Assert.equal(newAddresses[2], address(0x3), "element 2 should match");
+    Assert.equal(newAddresses[3], address(0x4), "element 3 should match");
+  }
+
+  function testUnionBothEmpty() public {
+    address[] memory newAddresses = addressesD.union(addressesC);
+    Assert.equal(newAddresses.length, 0, "length should be 0");
   }
 
 }
