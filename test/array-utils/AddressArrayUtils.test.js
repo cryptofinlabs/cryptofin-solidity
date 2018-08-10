@@ -78,10 +78,30 @@ contract('AddressArrayUtils', function(accounts) {
       await addressArrayUtilsContract.indexOf(A, 0x2);
     });
 
+    it('sPop', async () => {
+      const A = [0x2, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8];
+      await addressArrayUtilsContract.setAddressesA(A);
+      await addressArrayUtilsContract.sPop(6);
+      await addressArrayUtilsContract.sPop(0);
+      await addressArrayUtilsContract.sPop(1);
+
+      const B = [0x2, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x0, 0x2, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x2, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8];
+      await addressArrayUtilsContract.setAddressesA(B);
+      await addressArrayUtilsContract.sPop(16);
+      await addressArrayUtilsContract.sPop(0);
+      await addressArrayUtilsContract.sPop(1);
+    });
+
     it('sPopCheap', async () => {
       const A = [0x2, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8];
       await addressArrayUtilsContract.setAddressesA(A);
       await addressArrayUtilsContract.sPopCheap(6);
+      await addressArrayUtilsContract.sPopCheap(0);
+      await addressArrayUtilsContract.sPopCheap(1);
+
+      const B = [0x2, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x0, 0x2, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x2, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8];
+      await addressArrayUtilsContract.setAddressesA(B);
+      await addressArrayUtilsContract.sPopCheap(16);
       await addressArrayUtilsContract.sPopCheap(0);
       await addressArrayUtilsContract.sPopCheap(1);
     });
@@ -147,9 +167,6 @@ contract('AddressArrayUtils', function(accounts) {
     //});
 
     //it('sRemoveCheap', async () => {
-    //});
-
-    //it('sPopCheap', async () => {
     //});
 
     //it('remove', async () => {

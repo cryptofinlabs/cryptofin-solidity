@@ -72,6 +72,10 @@ contract AddressArrayUtilsContract {
     return AddressArrayUtils.remove(A, a);
   }
 
+  function sPop(uint256 index) public returns (address) {
+    return AddressArrayUtils.sPop(addressesA, index);
+  }
+
   function sPopCheap(uint256 index) public returns (address) {
     return AddressArrayUtils.sPopCheap(addressesA, index);
   }

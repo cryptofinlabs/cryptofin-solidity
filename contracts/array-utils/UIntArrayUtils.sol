@@ -105,10 +105,23 @@ library UIntArrayUtils {
     return (0, false);
   }
 
+  function sPop(uint256[] storage A, uint256 index) internal returns (uint256) {
+    uint256 length = A.length;
+    if (index >= length) {
+      revert("Error: index out of bounds");
+    }
+    uint256 entry = A[index];
+    for (uint256 i = index; i < length - 1; i++) {
+      A[i] = A[i + 1];
+    }
+    A.length--;
+    return entry;
+  }
+
   function sPopCheap(uint256[] storage A, uint256 index) internal returns (uint256) {
     uint256 length = A.length;
     if (index >= length) {
-      return length;
+      revert("Error: index out of bounds");
     }
     uint256 entry = A[index];
     if (index != length - 1) {

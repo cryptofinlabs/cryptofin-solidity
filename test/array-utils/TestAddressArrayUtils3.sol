@@ -82,4 +82,15 @@ contract TestAddressArrayUtils3 {
     Assert.isTrue(array.isEqual(expected), "array should match expected");
   }
 
+  function testSPop() public {
+    address entry = A.sPop(0);
+    Assert.equal(A.length, 3, "removed length should be 3");
+    Assert.equal(entry, address(0x1), "popped entry should be correct");
+    address[] memory expected = new address[](3);
+    expected[0] = address(0x2);
+    expected[1] = address(0x3);
+    expected[2] = address(0x4);
+    Assert.isTrue(A.isEqual(expected), "array should match expected");
+  }
+
 }

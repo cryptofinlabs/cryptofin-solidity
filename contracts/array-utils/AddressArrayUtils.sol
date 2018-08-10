@@ -202,6 +202,19 @@ library AddressArrayUtils {
     }
   }
 
+  function sPop(address[] storage A, uint256 index) internal returns (address) {
+    uint256 length = A.length;
+    if (index >= length) {
+      revert("Error: index out of bounds");
+    }
+    address entry = A[index];
+    for (uint256 i = index; i < length - 1; i++) {
+      A[i] = A[i + 1];
+    }
+    A.length--;
+    return entry;
+  }
+
   /**
   * Deletes address at index and fills the spot with the last address
   * Resulting ordering is not guaranteed
