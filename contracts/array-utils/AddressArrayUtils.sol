@@ -18,12 +18,12 @@ library AddressArrayUtils {
 
   /**
   * @return Returns isIn for the first occurrence starting from index 0
-  */ 
+  */
+  // named includes in lots of languages
   function contains(address[] memory A, address a) internal pure returns (bool) {
     (, bool isIn) = indexOf(A, a);
     return isIn;
   }
-
 
   /// @return Returns index and isIn for the first occurrence starting from
   /// end
@@ -79,7 +79,7 @@ library AddressArrayUtils {
   }
 
   /**
-   * Ordering is nor guaranteed
+   * Ordering is not guaranteed
    * Computes union with A + B - A^B
    */
   function union(address[] memory A, address[] memory B) internal pure returns (address[] memory) {
@@ -90,8 +90,43 @@ library AddressArrayUtils {
   }
 
   /**
+   * Alternate implementation
+   * Assumes there are no duplicates
+   */
+  function unionB(address[] memory A, address[] memory B) internal pure returns (address[] memory) {
+    bool[] memory includeMap = new bool[](A.length + B.length);
+    uint256 i = 0;
+    uint256 count = 0;
+    for (i = 0; i < A.length; i++) {
+      includeMap[i] = true;
+      count++;
+    }
+    for (i = 0; i < B.length; i++) {
+      if (!contains(A, B[i])) {
+        includeMap[A.length + i] = true;
+        count++;
+      }
+    }
+    address[] memory newAddresses = new address[](count);
+    uint256 j = 0;
+    for (i = 0; i < A.length; i++) {
+      if (includeMap[i]) {
+        newAddresses[j] = A[i];
+        j++;
+      }
+    }
+    for (i = 0; i < B.length; i++) {
+      if (includeMap[A.length + i]) {
+        newAddresses[j] = B[i];
+        j++;
+      }
+    }
+    return newAddresses;
+  }
+
+  /**
    * Computes the difference of two arrays
-   * Removes duplicates
+   * Assumes there are no duplicates
    */
   function difference(address[] memory A, address[] memory B) internal pure returns (address[] memory) {
     uint256 length = A.length;
@@ -116,11 +151,10 @@ library AddressArrayUtils {
     return newAddresses;
   }
 
-  // TODO: rename reverseStorage or split up into separate AddressStorageArrayUtils
   /**
   * @dev Reverses address array in place
   */
-  function reverse(address[] storage A) internal {
+  function sReverse(address[] storage A) internal {
     address t;
     uint256 length = A.length;
     for (uint256 i = 0; i < length / 2; i++) {
@@ -133,9 +167,13 @@ library AddressArrayUtils {
   /**
   * Removes specified index from array
   * Resulting ordering is not guaranteed
-  * @return Returns the new array and its length
+  * @return Returns the new array and the removed entry
   */
-  function removeIndex(address[] memory A, uint256 index) internal pure returns (address[] memory, uint256) {
+  function pop(address[] memory A, uint256 index)
+    internal
+    pure
+    returns (address[] memory, address)
+  {
     uint256 length = A.length;
     address[] memory newAddresses = new address[](length - 1);
     for (uint256 i = 0; i < index; i++) {
@@ -144,48 +182,55 @@ library AddressArrayUtils {
     for (i = index + 1; i < length; i++) {
       newAddresses[i - 1] = A[i];
     }
-    return (newAddresses, length - 1);
+    return (newAddresses, A[index]);
   }
 
-  function remove(address[] memory A, address a) internal pure returns (address[] memory, uint256) {
+  /**
+   * @return Returns the new array
+   */
+  function remove(address[] memory A, address a)
+    internal
+    pure
+    returns (address[] memory)
+  {
     (uint256 index, bool isIn) = indexOf(A, a);
     if (!isIn) {
-      return (A, A.length);
+      revert();
     } else {
-      return removeIndex(A, index);
+      (address[] memory _A,) = pop(A, index);
+      return _A;
     }
   }
-
 
   /**
   * Deletes address at index and fills the spot with the last address
   * Resulting ordering is not guaranteed
-  * @return Returns the new array length
+  * @return Returns the removed entry
   */
-  function sRemoveIndex(address[] storage A, uint256 index) internal returns (uint256) {
+  function sPopCheap(address[] storage A, uint256 index) internal returns (address) {
     uint256 length = A.length;
     if (index >= length) {
-      return length;
+      revert("Error: index out of bounds");
     }
-    // TODO: check if this saves gas
-    // if (index != length - 1) {
-    A[index] = A[length - 1];
-    delete A[length - 1];
-    // }
+    address entry = A[index];
+    if (index != length - 1) {
+      A[index] = A[length - 1];
+      delete A[length - 1];
+    }
     A.length--;
-    return A.length;
+    return entry;
   }
 
   /**
    * Deletes address at index and fills the spot with the last address
-   * @return Returns the new array length
    */
-  function sRemove(address[] storage A, address a) internal returns (uint256) {
+  function sRemoveCheap(address[] storage A, address a) internal {
     (uint256 index, bool isIn) = indexOf(A, a);
     if (!isIn) {
-      return A.length;
+      revert("Error: entry not found");
     } else {
-      return sRemoveIndex(A, index);
+      sPopCheap(A, index);
+      return;
     }
   }
 
@@ -206,13 +251,27 @@ library AddressArrayUtils {
   }
 
   function isEqual(address[] A, address[] B) internal pure returns (bool) {
-    uint256 length = A.length;
-    for (uint256 i = 0; i < length; i++) {
+    if (A.length != B.length) {
+      return false;
+    }
+    for (uint256 i = 0; i < A.length; i++) {
       if (A[i] != B[i]) {
         return false;
       }
     }
     return true;
+  }
+
+  function argGet(address[] memory A, uint256[] memory indexArray)
+    internal
+    pure
+    returns (address[] memory)
+  {
+    address[] memory array = new address[](indexArray.length);
+    for (uint256 i = 0; i < indexArray.length; i++) {
+      array[i] = A[indexArray[i]];
+    }
+    return array;
   }
 
 }

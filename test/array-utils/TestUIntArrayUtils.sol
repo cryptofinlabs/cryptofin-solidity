@@ -119,4 +119,71 @@ contract TestUIntArrayUtils {
     Assert.equal(filtered.length, 0, "filtered array length is 0");
   }
 
+  function testArgGetSort() public {
+    uint256[] memory C = new uint256[](5);
+    C[0] = 3;
+    C[1] = 2;
+    C[2] = 8;
+    C[3] = 1;
+    C[4] = 11;
+    uint256[] memory indexArray = new uint256[](5);
+    indexArray[0] = 3;
+    indexArray[1] = 1;
+    indexArray[2] = 0;
+    indexArray[3] = 2;
+    indexArray[4] = 4;
+    uint256[] memory sorted = C.argGet(indexArray);
+    uint256[] memory expected = new uint256[](5);
+    expected[0] = 1;
+    expected[1] = 2;
+    expected[2] = 3;
+    expected[3] = 8;
+    expected[4] = 11;
+    Assert.isTrue(sorted.isEqual(expected), "array matches expected");
+  }
+
+  function testArgGetFilter() public {
+    uint256[] memory C = new uint256[](5);
+    C[0] = 3;
+    C[1] = 2;
+    C[2] = 8;
+    C[3] = 1;
+    C[4] = 11;
+    uint256[] memory indexArray = new uint256[](1);
+    indexArray[0] = 4;
+    uint256[] memory filtered = C.argGet(indexArray);
+    uint256[] memory expected = new uint256[](1);
+    expected[0] = 11;
+    Assert.isTrue(filtered.isEqual(expected), "array matches expected");
+  }
+
+  function testArgGetEmpty() public {
+    uint256[] memory C = new uint256[](5);
+    C[0] = 3;
+    C[1] = 2;
+    C[2] = 8;
+    C[3] = 1;
+    C[4] = 11;
+    uint256[] memory indexArray = new uint256[](0);
+    uint256[] memory array = C.argGet(indexArray);
+    uint256[] memory expected = new uint256[](0);
+    Assert.isTrue(array.isEqual(expected), "array matches expected");
+  }
+
+  // TODO: with duplicates
+
+  function testArgFilter() public {
+    uint256[] memory C = new uint256[](5);
+    C[0] = 3;
+    C[1] = 0;
+    C[2] = 8;
+    C[3] = 0;
+    C[4] = 0;
+    uint256[] memory indexArray = C.argFilter(isNonZero);
+    uint256[] memory expected = new uint256[](2);
+    expected[0] = 0;
+    expected[1] = 2;
+    Assert.isTrue(indexArray.isEqual(expected), "array matches expected");
+  }
+
 }

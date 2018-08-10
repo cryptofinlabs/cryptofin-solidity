@@ -31,16 +31,6 @@ contract TestAddressArrayUtils2 {
     addressesB.push(address(0x10));
   }
 
-  function testRemoveDoesNotExist() public {
-    uint256 length = addressesA.sRemove(0x111);
-    Assert.equal(length, 4, "returned length should be 4");
-    Assert.equal(addressesA.length, 4, "length should be 4");
-    Assert.equal(addressesA[0], address(0x1), "element 0 should match");
-    Assert.equal(addressesA[1], address(0x2), "element 1 should match");
-    Assert.equal(addressesA[2], address(0x3), "element 2 should match");
-    Assert.equal(addressesA[3], address(0x4), "element 3 should match");
-  }
-
   // TODO: test difference with duplicates
   function testDifference() public {
     addressesC.push(address(0x2));

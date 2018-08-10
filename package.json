@@ -17,5 +17,8 @@
   "homepage": "https://github.com/cryptofinlabs/cryptofin-solidity#readme",
   "dependencies": {
     "openzeppelin-solidity": "^1.10.0"
+  },
+  "devDependencies": {
+    "eth-gas-reporter": "^0.1.10"
   }
 }
