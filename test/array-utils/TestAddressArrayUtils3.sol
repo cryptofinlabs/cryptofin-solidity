@@ -104,4 +104,13 @@ contract TestAddressArrayUtils3 {
     Assert.isTrue(array.isEqual(expected), "array should match expected");
   }
 
+  function testHasDuplicate() public {
+    C.push(address(0x1));
+    C.push(address(0x2));
+    C.push(address(0x3));
+    C.push(address(0x1));
+    bool hasDuplicate = C.hasDuplicate();
+    Assert.isTrue(hasDuplicate, "should compute if duplicate correctly");
+  }
+
 }

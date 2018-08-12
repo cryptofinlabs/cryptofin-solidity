@@ -189,6 +189,7 @@ contract TestUIntArrayUtils {
   function testSPop() public {
     uint256 entry = A.sPop(2);
     Assert.equal(A.length, 3, "length should be 3");
+    Assert.equal(entry, 3, "popped entry should be correct");
     Assert.equal(A[0], 1, "first element should match");
     Assert.equal(A[1], 2, "first element should match");
     Assert.equal(A[2], 4, "first element should match");

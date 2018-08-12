@@ -258,8 +258,8 @@ library AddressArrayUtils {
   }
 
   /**
-  * Deletes address at index and fills the spot with the last address
-  * Resulting ordering is not guaranteed
+  * Deletes address at index and fills the spot with the last address.
+  * Order is not preserved.
   * @return Returns the removed entry
   */
   function sPopCheap(address[] storage A, uint256 index) internal returns (address) {
@@ -277,7 +277,9 @@ library AddressArrayUtils {
   }
 
   /**
-   * Deletes address at index and fills the spot with the last address
+   * Deletes address at index. Works by swapping it with the last address, then deleting.
+   * Order is not preserved
+   * @param A Storage array to remove from
    */
   function sRemoveCheap(address[] storage A, address a) internal {
     (uint256 index, bool isIn) = indexOf(A, a);
@@ -290,13 +292,13 @@ library AddressArrayUtils {
   }
 
   /**
-   * Returns whether or not there's a duplicate
-   * Runs in O(n^2)
+   * Returns whether or not there's a duplicate. Runs in O(n^2).
+   * @param A Array to search
+   * @return Returns true if duplicate, false otherwise
    */
-  function hasDuplicate(address[] A) internal pure returns (bool) {
-    uint256 length = A.length;
-    for (uint256 i = 0; i < length - 1; i++) {
-      for (uint256 j = i + 1; j < length; j++) {
+  function hasDuplicate(address[] memory A) internal pure returns (bool) {
+    for (uint256 i = 0; i < A.length - 1; i++) {
+      for (uint256 j = i + 1; j < A.length; j++) {
         if (A[i] == A[j]) {
           return true;
         }
@@ -305,7 +307,13 @@ library AddressArrayUtils {
     return false;
   }
 
-  function isEqual(address[] A, address[] B) internal pure returns (bool) {
+  /**
+   * Returns whether the two arrays are equal.
+   * @param A The first array
+   * @param B The second array
+   * @return True is the arrays are equal, false if not.
+   */
+  function isEqual(address[] memory A, address[] memory B) internal pure returns (bool) {
     if (A.length != B.length) {
       return false;
     }
@@ -317,6 +325,12 @@ library AddressArrayUtils {
     return true;
   }
 
+  /**
+   * Returns the elements indexed at indexArray.
+   * @param A The array to index
+   * @param indexArray The array to use to index
+   * @return Returns array containing elements indexed at indexArray
+   */
   function argGet(address[] memory A, uint256[] memory indexArray)
     internal
     pure
