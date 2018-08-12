@@ -93,4 +93,15 @@ contract TestAddressArrayUtils3 {
     Assert.isTrue(A.isEqual(expected), "array should match expected");
   }
 
+  function testAppend() public {
+    address[] memory array = A.append(0x1101);
+    address[] memory expected = new address[](5);
+    expected[0] = address(0x1);
+    expected[1] = address(0x2);
+    expected[2] = address(0x3);
+    expected[3] = address(0x4);
+    expected[4] = address(0x1101);
+    Assert.isTrue(array.isEqual(expected), "array should match expected");
+  }
+
 }

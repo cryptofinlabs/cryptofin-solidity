@@ -4,8 +4,11 @@ pragma solidity 0.4.24;
 library AddressArrayUtils {
 
   /**
-   * @return Returns index and isIn for the first occurrence starting from index 0
-   */ 
+   * Finds the index of the first occurrence of the given element.
+   * @param A The input array to search
+   * @param a The value to find
+   * @return Returns (index and isIn) for the first occurrence starting from index 0
+   */
   function indexOf(address[] memory A, address a) internal pure returns (uint256, bool) {
     uint256 length = A.length;
     for (uint256 i = 0; i < length; i++) {
@@ -17,9 +20,11 @@ library AddressArrayUtils {
   }
 
   /**
+  * Returns true if the value is present in the list. Uses indexOf internally.
+  * @param A The input array to search
+  * @param a The value to find
   * @return Returns isIn for the first occurrence starting from index 0
   */
-  // named includes in lots of languages
   function contains(address[] memory A, address a) internal pure returns (bool) {
     (, bool isIn) = indexOf(A, a);
     return isIn;
@@ -37,6 +42,12 @@ library AddressArrayUtils {
     return (0, false);
   }
 
+  /**
+   * Returns the combination of the two arrays
+   * @param A The first array
+   * @param B The second array
+   * @return Returns A extended by B
+   */
   function extend(address[] memory A, address[] memory B) internal pure returns (address[] memory) {
     uint256 aLength = A.length;
     uint256 bLength = B.length;
@@ -50,6 +61,27 @@ library AddressArrayUtils {
     return newAddresses;
   }
 
+  /**
+   * Returns the array with a appended to A.
+   * @param A The first array
+   * @param a The value to append
+   * @return Returns A appended by a
+   */
+  function append(address[] memory A, address a) internal pure returns (address[] memory) {
+    address[] memory newAddresses = new address[](A.length + 1);
+    for (uint256 i = 0; i < A.length; i++) {
+      newAddresses[i] = A[i];
+    }
+    newAddresses[A.length] = a;
+    return newAddresses;
+  }
+
+  /**
+   * Returns the combination of two storage arrays.
+   * @param A The first array
+   * @param B The second array
+   * @return Returns A appended by a
+   */
   function sExtend(address[] storage A, address[] storage B) internal {
     uint256 length = B.length;
     for (uint256 i = 0; i < length; i++) {
@@ -57,6 +89,12 @@ library AddressArrayUtils {
     }
   }
 
+  /**
+   * Returns the intersection of two arrays. Arrays are treated as collections, so duplicates are kept.
+   * @param A The first array
+   * @param B The second array
+   * @return The intersection of the two arrays
+   */
   function intersect(address[] memory A, address[] memory B) internal pure returns (address[] memory) {
     uint256 length = A.length;
     bool[] memory includeMap = new bool[](length);
@@ -79,8 +117,10 @@ library AddressArrayUtils {
   }
 
   /**
-   * Ordering is not guaranteed
-   * Computes union with A + B - A^B
+   * Returns the union of the two arrays. Order is not guaranteed.
+   * @param A The first array
+   * @param B The second array
+   * @return The union of the two arrays
    */
   function union(address[] memory A, address[] memory B) internal pure returns (address[] memory) {
     address[] memory leftDifference = difference(A, B);
@@ -125,8 +165,10 @@ library AddressArrayUtils {
   }
 
   /**
-   * Computes the difference of two arrays
-   * Assumes there are no duplicates
+   * Computes the difference of two arrays. Assumes there are no duplicates.
+   * @param A The first array
+   * @param B The second array
+   * @return The difference of the two arrays
    */
   function difference(address[] memory A, address[] memory B) internal pure returns (address[] memory) {
     uint256 length = A.length;
@@ -152,7 +194,7 @@ library AddressArrayUtils {
   }
 
   /**
-  * @dev Reverses address array in place
+  * @dev Reverses storage array in place
   */
   function sReverse(address[] storage A) internal {
     address t;
