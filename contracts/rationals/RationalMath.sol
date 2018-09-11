@@ -61,25 +61,25 @@ library RationalMath {
     // n1/d1 > n2/d2
     // = d2*n1 > n2*d2
     function gt(Rational.Rational256 memory r1, Rational.Rational256 memory r2) internal pure returns (bool) {
-      return r2.d.mul(r1.n) > r2.n.mul(r2.d);
+      return r1.n.mul(r2.d) > r2.n.mul(r1.d);
     }
 
     // n1/d1 >= n2/d2
     // = d2*n1 >= n2*d2
     function gte(Rational.Rational256 memory r1, Rational.Rational256 memory r2) internal pure returns (bool) {
-      return r2.d.mul(r1.n) >= r2.n.mul(r2.d);
+      return r1.n.mul(r2.d) >= r2.n.mul(r1.d);
     }
 
     // n1/d1 < n2/d2
     // = d2*n1 < n2*d2
     function lt(Rational.Rational256 memory r1, Rational.Rational256 memory r2) internal pure returns (bool) {
-      return r2.d.mul(r1.n) < r2.n.mul(r2.d);
+      return r1.n.mul(r2.d) < r2.n.mul(r1.d);
     }
 
     // n1/d1 <= n2/d2
     // = d2*n1 <= n2*d2
     function lte(Rational.Rational256 memory r1, Rational.Rational256 memory r2) internal pure returns (bool) {
-      return r2.d.mul(r1.n) <= r2.n.mul(r2.d);
+      return r1.n.mul(r2.d) <= r2.n.mul(r1.d);
     }
 
 }
