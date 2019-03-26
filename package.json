@@ -1,9 +1,9 @@
 {
   "name": "cryptofin-solidity",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A collection of Solidity libraries.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx truffle test"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
     "openzeppelin-solidity": "^1.10.0"
   },
   "devDependencies": {
-    "eth-gas-reporter": "^0.1.10"
+    "eth-gas-reporter": "^0.1.10",
+    "truffle": "^4.1.13"
   }
 }

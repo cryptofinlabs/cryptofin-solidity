@@ -63,6 +63,39 @@ contract('AddressArrayUtils', function(accounts) {
       }
     });
 
+    it('hasDuplicate should correctly identify duplicates', async () => {
+      const A = [0x2, 0x1, 0x3, 0x5, 0x5];
+      const hasDuplicate = await addressArrayUtilsContract.hasDuplicate.call(A);
+      assert.equal(hasDuplicate, true);
+
+      const B = [0x2, 0x1, 0x3, 0x1, 0x5];
+      const hasDuplicateB = await addressArrayUtilsContract.hasDuplicate.call(B);
+      assert.equal(hasDuplicateB, true);
+    });
+
+    it('hasDuplicate should correctly identify no duplicates', async () => {
+      const A = [0x2, 0x1, 0x3, 0x4, 0x5];
+      const hasDuplicate = await addressArrayUtilsContract.hasDuplicate.call(A);
+      assert.equal(hasDuplicate, false);
+    });
+
+    it('hasDuplicate should correctly identify no duplicates with array of length 1', async () => {
+      const A = [0x2];
+      const hasDuplicate = await addressArrayUtilsContract.hasDuplicate.call(A);
+      assert.equal(hasDuplicate, false);
+    });
+
+    it('hasDuplicate should return false when array is empty', async () => {
+      const A = [];
+      const hasDuplicate = await addressArrayUtilsContract.hasDuplicate.call(A);
+      assert.equal(hasDuplicate, false);
+    });
+
+    it.only('hasDuplicate should correctly identify no duplicates with length 1', async () => {
+      const A = [];
+      await addressArrayUtilsContract.pop(A, 0);
+    });
+
 
   });
 
@@ -151,8 +184,15 @@ contract('AddressArrayUtils', function(accounts) {
     //it('sRemoveCheap', async () => {
     //});
 
-    //it('hasDuplicate', async () => {
-    //});
+    it('hasDuplicate', async () => {
+      const A = [0x2, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0x10, 0x11, 0x13, 0x13];
+      const B = [0x2, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0x10, 0x11, 0x12,
+                 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20, 0x21, 0x23, 0x23];
+      const C = [0x1, 0x1, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0x10, 0x11, 0x12, 0x13];
+      await addressArrayUtilsContract.hasDuplicate(A);
+      await addressArrayUtilsContract.hasDuplicate(B);
+      await addressArrayUtilsContract.hasDuplicate(C);
+    });
 
     //it('isEqual', async () => {
     //});
